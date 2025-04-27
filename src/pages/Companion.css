@@ -1,0 +1,165 @@
+.companion-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.content-area {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.content-display {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  min-height: 300px;
+}
+
+.close-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #a344448a;
+  border: none;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.close-button:hover {
+  background-color: #87121233;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button:active {
+  transform: scale(0.95);
+}
+
+.close-button::before {
+  content: "×";
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.content-display p {
+  font-size: 1.2em;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+  white-space: pre-line;
+  padding-top: 20px;
+}
+
+.music-controls {
+  margin-top: 20px;
+}
+
+.control-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.control-button:hover {
+  background-color: #0056b3;
+}
+
+.companion-div {
+  text-align: center;
+}
+
+.welcome-message {
+  text-align: center;
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.companion-options {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.option-item {
+  margin: 10px 0;
+  background-color: #4a90e2;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: all 0.3s ease;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.option-item:hover {
+  background-color: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.option-item:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #357abd;
+}
+
+.companion-content {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} 
