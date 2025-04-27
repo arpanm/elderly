@@ -131,12 +131,7 @@ const Companion: React.FC = () => {
               <p>{currentContent}</p>
               {searchParams.get('action') === 'music' && (
                 <div className="music-controls">
-                  <button
-                    onClick={isPlaying ? stopMusic : playMusic}
-                    className="control-button"
-                  >
-                    {isPlaying ? 'Stop Music' : 'Play Music'}
-                  </button>
+                  
                 </div>
               )}
             </div>

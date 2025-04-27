@@ -15,6 +15,7 @@ const Tasks: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [newTask, setNewTask] = useState({
     title: '',
     type: 'bill',
@@ -67,14 +68,102 @@ const Tasks: React.FC = () => {
   }, []);
 
   const speakStatus = (task: Task) => {
+    let statusText = `Task ${task.title} is ${task.status.toLowerCase()}`;
+    
+    if (task.status === 'Pending' || task.status === 'Scheduled') {
+      // Add date information if available
+      if (task.date) {
+        const date = new Date(task.date);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric'
+        });
+        statusText += ` and is due on ${formattedDate}`;
+      }
+
+      // Add type-specific information
+      switch (task.type) {
+        case 'bill':
+          statusText += ` for bill payment`;
+          break;
+        case 'appointment':
+          statusText += ` for doctor appointment`;
+          break;
+        case 'service':
+          statusText += ` for service request`;
+          break;
+        case 'shopping':
+          statusText += ` for shopping`;
+          break;
+      }
+    }
+
+    speak(statusText);
+  };
+
+  const speak = (text: string) => {
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(
-        `${task.title} is ${task.status.toLowerCase()}`
-      );
+      const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.8;
       utterance.pitch = 1;
       window.speechSynthesis.speak(utterance);
     }
+  };
+
+  const startVoiceInput = () => {
+    if ('webkitSpeechRecognition' in window) {
+      const recognition = new (window as any).webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        speak("I'm listening. Please tell me the task details.");
+      };
+
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        processVoiceInput(transcript);
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error', event.error);
+        speak("Sorry, I couldn't understand. Please try again.");
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } else {
+      speak("Sorry, your browser doesn't support speech recognition.");
+    }
+  };
+
+  const processVoiceInput = (transcript: string) => {
+    // Extract task type
+    const taskTypes = ['bill', 'appointment', 'service', 'shopping'];
+    const foundType = taskTypes.find(type => transcript.includes(type));
+    
+    // Extract date if mentioned
+    const dateMatch = transcript.match(/\d{1,2}(st|nd|rd|th)?\s+(january|february|march|april|may|june|july|august|september|october|november|december)/i);
+    
+    // Create new task
+    const task: Task = {
+      id: Date.now(),
+      title: transcript,
+      type: foundType || 'bill',
+      status: 'Pending',
+      date: dateMatch ? new Date(dateMatch[0]).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+    };
+
+    setTasks(prevTasks => [...prevTasks, task]);
+    setFilteredTasks(prevTasks => [...prevTasks, task]);
+    speak(`I've created a new task: ${task.title}. The status is ${task.status}.`);
   };
 
   const handleShowAll = () => {
@@ -103,8 +192,7 @@ const Tasks: React.FC = () => {
       date: new Date().toISOString().split('T')[0]
     });
 
-    // Speak the new task status
-    speakStatus(task);
+    speak(`I've created a new task: ${task.title}. The status is ${task.status}.`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -182,8 +270,11 @@ const Tasks: React.FC = () => {
               Show All Tasks
             </button>
           )}
-          <button className="add-task-button" onClick={() => setShowAddForm(true)}>
-            + Add New Task
+          <button 
+            className={`add-task-button ${isListening ? 'listening' : ''}`} 
+            onClick={startVoiceInput}
+          >
+            {isListening ? '🎤 Listening...' : '+ Add Task'}
           </button>
         </div>
 
