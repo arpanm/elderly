@@ -181,6 +181,7 @@ const Companion: React.FC = () => {
         />
       </div>
       <SOSButton onSOSClick={handleSOSClick} />
+      <div className="bottom-padding" />
     </div>
   );
 };

@@ -125,6 +125,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className="bottom-padding" />
     </div>
   );
 };

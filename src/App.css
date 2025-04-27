@@ -22,4 +22,9 @@ body {
   .app {
     padding-bottom: 100px; /* Space for voice chat */
   }
+}
+
+.bottom-padding {
+  height: 100px; /* Adjust this value based on your VoiceChat component's height */
+  width: 100%;
 } 

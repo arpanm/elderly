@@ -314,6 +314,7 @@ const Settings: React.FC = () => {
         </button>
       </div>
       <SOSButton onSOSClick={handleSOSClick} />
+      <div className="bottom-padding" />
     </div>
   );
 };

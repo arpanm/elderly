@@ -142,10 +142,10 @@ const VoiceChat: React.FC = () => {
   return (
     <div className="voice-chat-container">
       <div className="chat-messages" ref={chatContainerRef}>
-        {messages.map((message, index) => (
+        {messages.slice(-2).map((message, index) => (
           <div
             key={message.id}
-            ref={index === messages.length - 1 ? lastMessageRef : null}
+            ref={index === messages.slice(-2).length - 1 ? lastMessageRef : null}
             className={`message ${message.sender === 'user' ? 'user' : 'bot'}`}
           >
             <div className="message-content">{message.text}</div>

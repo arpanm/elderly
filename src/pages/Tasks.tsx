@@ -377,6 +377,7 @@ const Tasks: React.FC = () => {
         </div>
       </div>
       <SOSButton onSOSClick={handleSOSClick} />
+      <div className="bottom-padding" />
     </div>
   );
 };

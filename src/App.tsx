@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import Companion from './pages/Companion';
+import Settings from './pages/Settings';
 import VoiceChat from './components/VoiceChat';
 import SOSButton from './components/SOSButton';
 import './App.css';
@@ -38,6 +39,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/companion" element={<Companion />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
         <VoiceChat />
         <SOSButton onSOSClick={handleSOSClick} />
