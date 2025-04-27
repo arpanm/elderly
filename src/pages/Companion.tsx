@@ -3,19 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import SOSButton from '../components/SOSButton';
 import './Companion.css';
 
-interface ChatMessage {
-  id: string;
-  text: string;
-  sender: 'user' | 'assistant';
-  timestamp: Date;
-}
-
-interface CompanionProps {
-  messages: ChatMessage[];
-  addMessage: (message: ChatMessage) => void;
-}
-
-const Companion: React.FC<CompanionProps> = ({ messages, addMessage }) => {
+const Companion: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [currentContent, setCurrentContent] = useState<string>('');
   const [isPlaying, setIsPlaying] = useState(false);

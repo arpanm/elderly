@@ -1,48 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import Companion from './pages/Companion';
-import Settings from './pages/Settings';
 import VoiceChat from './components/VoiceChat';
 import SOSButton from './components/SOSButton';
-import { ChatMessage } from './types/chat';
 import './App.css';
 
 function App() {
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [isSOSActive, setIsSOSActive] = useState(false);
-
-  // Load messages from sessionStorage only once on mount
-  useEffect(() => {
-    const storedMessages = sessionStorage.getItem('chatMessages');
-    if (storedMessages) {
-      try {
-        const parsedMessages = JSON.parse(storedMessages);
-        const messagesWithDates = parsedMessages.map((msg: any) => ({
-          ...msg,
-          timestamp: new Date(msg.timestamp)
-        }));
-        setChatMessages(messagesWithDates);
-      } catch (error) {
-        console.error('Error parsing chat messages:', error);
-        sessionStorage.removeItem('chatMessages');
-      }
-    }
-  }, []); // Empty dependency array to run only once on mount
-
-  const addMessage = React.useCallback((message: ChatMessage) => {
-    setChatMessages(prevMessages => {
-      const updatedMessages = [...prevMessages, message];
-      // Convert Date objects to ISO strings before storing
-      const messagesToStore = updatedMessages.map(msg => ({
-        ...msg,
-        timestamp: msg.timestamp.toISOString()
-      }));
-      sessionStorage.setItem('chatMessages', JSON.stringify(messagesToStore));
-      return updatedMessages;
-    });
-  }, []); // Empty dependency array since we don't depend on any external values
 
   const handleSOSClick = () => {
     setIsSOSActive(true);
@@ -71,10 +37,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tasks" element={<Tasks />} />
-          <Route path="/companion" element={<Companion messages={chatMessages} addMessage={addMessage} />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/companion" element={<Companion />} />
         </Routes>
-        <VoiceChat messages={chatMessages} addMessage={addMessage} />
+        <VoiceChat />
         <SOSButton onSOSClick={handleSOSClick} />
       </div>
     </Router>

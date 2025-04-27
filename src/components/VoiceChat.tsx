@@ -2,37 +2,49 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ChatMessage } from '../types/chat';
 import './VoiceChat.css';
 
-interface VoiceChatProps {
-  messages: ChatMessage[];
-  addMessage: (message: ChatMessage) => void;
-}
-
-const VoiceChat: React.FC<VoiceChatProps> = ({ messages, addMessage }) => {
+const VoiceChat: React.FC = () => {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [showCallBack, setShowCallBack] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const lastMessageRef = useRef<HTMLDivElement>(null);
 
   // Load initial messages from sessionStorage
   useEffect(() => {
     const storedMessages = sessionStorage.getItem('chatMessages');
     if (storedMessages) {
-      const parsedMessages = JSON.parse(storedMessages);
-      // Convert string timestamps back to Date objects
-      parsedMessages.forEach((msg: ChatMessage) => {
-        msg.timestamp = new Date(msg.timestamp);
-      });
-      // Add all stored messages
-      parsedMessages.forEach((msg: ChatMessage) => {
-        addMessage(msg);
-      });
+      try {
+        const parsedMessages = JSON.parse(storedMessages);
+        const messagesWithDates = parsedMessages.map((msg: any) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp)
+        }));
+        setMessages(messagesWithDates);
+      } catch (error) {
+        console.error('Error parsing chat messages:', error);
+        sessionStorage.removeItem('chatMessages');
+      }
     }
-  }, [addMessage]);
+  }, []);
+
+  const addMessage = useCallback((message: ChatMessage) => {
+    setMessages(prevMessages => {
+      const updatedMessages = [...prevMessages, message];
+      // Convert Date objects to ISO strings before storing
+      const messagesToStore = updatedMessages.map(msg => ({
+        ...msg,
+        timestamp: msg.timestamp.toISOString()
+      }));
+      sessionStorage.setItem('chatMessages', JSON.stringify(messagesToStore));
+      return updatedMessages;
+    });
+  }, []);
 
   // Scroll to bottom when messages change
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
@@ -106,6 +118,11 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ messages, addMessage }) => {
   }, [handleVoiceCommand]);
 
   const startListening = () => {
+    // Stop any ongoing speech synthesis
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    
     if (recognitionRef.current) {
       recognitionRef.current.start();
     }
@@ -125,9 +142,10 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ messages, addMessage }) => {
   return (
     <div className="voice-chat-container">
       <div className="chat-messages" ref={chatContainerRef}>
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div
             key={message.id}
+            ref={index === messages.length - 1 ? lastMessageRef : null}
             className={`message ${message.sender === 'user' ? 'user' : 'bot'}`}
           >
             <div className="message-content">{message.text}</div>

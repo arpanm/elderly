@@ -58,21 +58,72 @@ const Home: React.FC = () => {
           </li>
           <li onClick={() => handleItemClick('doctor')}>
             <span className="feature-icon">👨‍⚕️</span>
-            <span className="feature-text">Book apointment for my Doctor</span>
+            <span className="feature-text">When is my Doctor's appointment?</span>
           </li>
           <li onClick={() => handleItemClick('plumber')}>
             <span className="feature-icon">🔧</span>
-            <span className="feature-text">Call Plumber</span>
+            <span className="feature-text">Is Plumber coming today?</span>
           </li>
           <li onClick={() => handleItemClick('electrician')}>
             <span className="feature-icon">⚡</span>
-            <span className="feature-text">Call Electrician</span>
+            <span className="feature-text">Is Electrician coming today?</span>
           </li>
           <li onClick={() => handleItemClick('shopping')}>
             <span className="feature-icon">🛒</span>
-            <span className="feature-text">Help me with shopping</span>
+            <span className="feature-text">Help with my shopping</span>
           </li>
         </ul>
+      </div>
+      <div className="coming-soon-features">
+        <h2>Coming Soon Features</h2>
+        <div className="feature-categories">
+          <div className="feature-category">
+            <h3>Health & Wellness</h3>
+            <ul>
+              <li className="disabled">
+                <span className="feature-icon">🏥</span>
+                <span className="feature-text">Book periodic medical checkup</span>
+              </li>
+              <li className="disabled">
+                <span className="feature-icon">💉</span>
+                <span className="feature-text">Schedule immunization</span>
+              </li>
+              <li className="disabled">
+                <span className="feature-icon">🥦</span>
+                <span className="feature-text">Order daily groceries</span>
+              </li>
+              <li className="disabled">
+                <span className="feature-icon">💊</span>
+                <span className="feature-text">Order monthly medicines</span>
+              </li>
+            </ul>
+          </div>
+          <div className="feature-category">
+            <h3>Memory Lane</h3>
+            <ul>
+              <li className="disabled">
+                <span className="feature-icon">👶</span>
+                <span className="feature-text">Show my childhood memories</span>
+              </li>
+              <li className="disabled">
+                <span className="feature-icon">👨‍👩‍👧‍👦</span>
+                <span className="feature-text">Show my kids' year by year photos</span>
+              </li>
+              <li className="disabled">
+                <span className="feature-icon">💑</span>
+                <span className="feature-text">Show my marriage photos</span>
+              </li>
+              <li className="disabled">
+                <span className="feature-icon">🎓</span>
+                <span className="feature-text">Show my graduation memories</span>
+              </li>
+              <li className="disabled">
+                <span className="feature-icon">🌍</span>
+                <span className="feature-text">Show my travel memories</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
