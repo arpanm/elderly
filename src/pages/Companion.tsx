@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import SOSButton from '../components/SOSButton';
 import './Companion.css';
 
-const Companion: React.FC = () => {
+interface ChatMessage {
+  id: string;
+  text: string;
+  sender: 'user' | 'assistant';
+  timestamp: Date;
+}
+
+interface CompanionProps {
+  messages: ChatMessage[];
+  addMessage: (message: ChatMessage) => void;
+}
+
+const Companion: React.FC<CompanionProps> = ({ messages, addMessage }) => {
   const [searchParams] = useSearchParams();
   const [currentContent, setCurrentContent] = useState<string>('');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -115,6 +128,26 @@ const Companion: React.FC = () => {
     setCurrentContent('');
   };
 
+  const handleSOSClick = () => {
+    // Call emergency contacts
+    const emergencyContacts = [
+      { name: 'Jane Das', number: '+91 9298716543' },
+      { name: 'Robert Smith', number: '+1 (555) 876-5432' },
+      { name: 'Mary Kosi', number: '+91 9976514321' }
+    ];
+    
+    // Announce SOS activation
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance('SOS activated! Calling emergency contacts.');
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Simulate calling emergency contacts
+    emergencyContacts.forEach(contact => {
+      console.log(`Calling ${contact.name} at ${contact.number}`);
+    });
+  };
+
   return (
     <div className="companion-container">
       <button className="back-button" onClick={() => navigate('/')}>
@@ -159,6 +192,7 @@ const Companion: React.FC = () => {
           onEnded={() => setIsPlaying(false)}
         />
       </div>
+      <SOSButton onSOSClick={handleSOSClick} />
     </div>
   );
 };

@@ -1,12 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { ChatMessage } from '../types/chat';
 import './VoiceChat.css';
-
-interface ChatMessage {
-  id: string;
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
-}
 
 interface VoiceChatProps {
   messages: ChatMessage[];
@@ -46,7 +40,7 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ messages, addMessage }) => {
     const newMessage: ChatMessage = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       text: command,
-      isUser: true,
+      sender: 'user',
       timestamp: new Date(),
     };
     addMessage(newMessage);
@@ -81,7 +75,7 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ messages, addMessage }) => {
     const botMessage: ChatMessage = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       text: response,
-      isUser: false,
+      sender: 'assistant',
       timestamp: new Date(),
     };
     addMessage(botMessage);
@@ -122,7 +116,7 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ messages, addMessage }) => {
     const botMessage: ChatMessage = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       text: 'Waiting for incoming call...',
-      isUser: false,
+      sender: 'assistant',
       timestamp: new Date(),
     };
     addMessage(botMessage);
@@ -134,7 +128,7 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ messages, addMessage }) => {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`message ${message.isUser ? 'user' : 'bot'}`}
+            className={`message ${message.sender === 'user' ? 'user' : 'bot'}`}
           >
             <div className="message-content">{message.text}</div>
             <div className="message-time">

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -14,6 +13,8 @@ const Home: React.FC = () => {
         navigate('/companion?action=music');
     } else if (action === 'story') {
         navigate('/companion?action=story');
+    } else if (action === 'settings') {
+      navigate('/settings');
     } else {
       navigate(`/tasks?action=${action}`);
     }
@@ -31,6 +32,10 @@ const Home: React.FC = () => {
           <div className="menu-icon">🎵</div>
           <div className="menu-text">Your Companion</div>
         </Link>
+        <div className="menu-item" onClick={() => handleItemClick('settings')}>
+          <div className="menu-icon">👤⚙️</div>
+          <div className="menu-text">Personal Information</div>
+        </div>
       </div>
       <div className="quick-commands">
         <h2>Quick Asks!</h2>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import SOSButton from '../components/SOSButton';
 import './Tasks.css';
 
 interface Task {
@@ -228,6 +229,26 @@ const Tasks: React.FC = () => {
     });
   };
 
+  const handleSOSClick = () => {
+    // Call emergency contacts
+    const emergencyContacts = [
+      { name: 'Jane Das', number: '+91 9298716543' },
+      { name: 'Robert Smith', number: '+1 (555) 876-5432' },
+      { name: 'Mary Kosi', number: '+91 9976514321' }
+    ];
+    
+    // Announce SOS activation
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance('SOS activated! Calling emergency contacts.');
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Simulate calling emergency contacts
+    emergencyContacts.forEach(contact => {
+      console.log(`Calling ${contact.name} at ${contact.number}`);
+    });
+  };
+
   useEffect(() => {
     const action = searchParams.get('action');
     if (action) {
@@ -355,6 +376,7 @@ const Tasks: React.FC = () => {
           ))}
         </div>
       </div>
+      <SOSButton onSOSClick={handleSOSClick} />
     </div>
   );
 };
